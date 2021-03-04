@@ -4,6 +4,7 @@ import { randomiser, wordify } from "./utils";
 import alphabet, { Letter, LetterType } from "./alphabet";
 
 import { FlashCard } from "./FlashCard";
+import Modal from "./Modal";
 
 const LETTER_TYPE_STORAGE_KEY = "LETTER_TYPES";
 
@@ -59,36 +60,75 @@ export default function App() {
 
   const { item, shuffle } = useRandomiser(letters);
 
-  return (
-    <>
-      <nav>
-        <ul>
-          {Object.keys(LetterType).map((type) => (
-            <li key={type}>
-              <label htmlFor={`checkbox-${type}`}>
-                <input
-                  onChange={() => dispatch({ type: type })}
-                  type="checkbox"
-                  name="letter_type"
-                  checked={enabledLetterTypes[type]}
-                  value={type}
-                  id={`checkbox-${type}`}
-                />
-                {wordify(type)}
-              </label>
-            </li>
-          ))}
-        </ul>
+	const [displayAnswer, setAnswerVisibility] = useState(false);
+	useEffect(() => {
+		setAnswerVisibility(false);
+	}, [item]);
 
-        <button type="button" onClick={() => shuffle()}>
-          <span role="img" aria-label="Refresh the question">
-            🔄
-          </span>
-        </button>
-      </nav>
-      <div className="App">
-        <FlashCard question={item?.char} answer={item?.romanization} />
-      </div>
-    </>
+	const [displaySettings, setSettingsVisibility] = useState(false);
+
+  return (
+		<>
+			<header>
+				<h1 lang="ko">
+					<span role="img" aria-label="Korean flags">
+						🇰🇷
+					</span>
+					한글 배우기
+				</h1>
+			</header>
+			<main>
+				<FlashCard
+					question={item?.char}
+					answer={item?.romanization}
+					displayAnswer={displayAnswer}
+				/>
+			</main>
+			<aside>
+
+				<button type="button" data-active={displaySettings} style={{ "--background": "#5639E0" } as React.CSSProperties} onClick={() => setSettingsVisibility(!displaySettings)}>
+					<span role="img" aria-label="Choose level">
+						⚙️
+					</span>
+				</button>
+
+				<button type="button" data-active={displayAnswer} style={{ "--background": "#FF6C27" } as React.CSSProperties} onClick={() => setAnswerVisibility(!displayAnswer)}>
+					<span role="img" aria-label="Toggle the answer">
+						👀
+					</span>
+				</button>
+
+				<button type="button" onClick={() => shuffle()} style={{ "--background": "#00CA8B" } as React.CSSProperties} >
+					<span role="img" aria-label="Next question">
+						🔄
+					</span>
+				</button>
+
+				{displaySettings && (
+					<Modal>
+						<div className="modal-body">
+							<button type="button" onClick={() => setSettingsVisibility(false)}>Close</button>
+							<ul>
+								{Object.keys(LetterType).map((type) => (
+									<li key={type}>
+										<label htmlFor={`checkbox-${type}`}>
+											<input
+												onChange={() => dispatch({ type: type })}
+												type="checkbox"
+												name="letter_type"
+												checked={enabledLetterTypes[type]}
+												value={type}
+												id={`checkbox-${type}`}
+											/>
+											{wordify(type)}
+										</label>
+									</li>
+								))}
+							</ul>
+						</div>
+					</Modal>
+				)}
+			</aside>
+		</>
   );
 }

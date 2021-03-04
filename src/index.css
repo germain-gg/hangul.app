@@ -8,24 +8,29 @@ body {
 }
 
 #root {
-
 	height: 100vh;
 	display: flex;
 	flex-direction: column;
+	background: white;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+header {
+	padding: 0 1em;
 }
 
-.App {
-	font-family: sans-serif;
-	text-align: center;
+	header [role=img] {
+		margin-right: .5em;
+	}
+
+main {
+	flex: 1;
+	background: #F7F7F7;
+	border-radius: 50px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex: 1;
+
+	padding-bottom: 50px;
 }
 
   nav {
@@ -50,17 +55,112 @@ code {
 	border: 0;
   }
 
-  .card {
-	font-size: 60px;
-	border: 1px solid #00000033;
-	width: 200px;
-	border-radius: 20px;
-	height: 200px;
-	line-height: 200px;
-	user-select: none;
+  .wrapper {
+	  width: 80vw;
+	  max-width: 360px;
   }
 
-  .card:hover {
-	cursor: pointer;
-	background: #00000011;
+  .card {
+	font-size: 100px;
+	font-weight: bold;
+	user-select: none;
+
+	width: 100%;
+	height: 0;
+	padding-top: 100%;
+	background: #5639E0;
+	color: white;
+	border-radius: 60px;
+
+	position: relative;
   }
+  .card-inner {
+	  position: absolute;
+	  top: 0;
+		right: 0;
+		bottom: 0;
+	  left: 0;
+			margin: 0;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+  }
+
+
+
+aside {
+	display: flex;
+	justify-content: center;
+	transform: translateY(-50%);
+}
+
+	aside button {
+		font-size: 50px;
+		line-height: 1.5;
+		background: #FFF;
+		border-radius: 15px;
+		box-shadow: 0 0 20px 0 #0005;
+		margin-left: .75em;
+	}
+
+	aside button:first-child {
+		margin-left: 0;
+	}
+
+	aside button:active,
+	aside button[data-active=true] {
+		--background: #333;
+		background: var(--background);
+	}
+
+		aside button span {
+			filter: grayscale(1);
+		}
+
+		aside button:active span,
+		aside button[data-active=true] span {
+			mix-blend-mode: luminosity
+		}
+
+
+
+
+.modal-body {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.85);
+}
+
+	.modal-body ul {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: 0;
+		justify-content: center;
+		color: white;
+		font-style: italic;
+		font-weight: bold;
+		font-size: 30px;
+		margin-left: 1em;
+	}
+
+		.modal-body ul li {
+			margin-top: .5em;
+		}
+
+		.modal-body ul li:first-child {
+			margin-top: 0;
+		}
+
+
+	.modal-body button {
+		position: absolute;
+		top: .5em;
+		right: .5em;
+		color: white;
+		font-weight: bold;
+		font-size: 25px;
+	}

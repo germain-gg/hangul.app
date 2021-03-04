@@ -3,11 +3,7 @@ import { assemble } from "hangul-js";
 
 import { isSpeechSynthesisAvailable, speak } from "./utils";
 
-export function FlashCard({ question, answer }: FlashCardProps) {
-  const [displayAnswer, setDisplayAnswer] = useState(false);
-	useEffect(() => {
-    setDisplayAnswer(false);
-  }, [question, answer]);
+export function FlashCard({ question, answer, displayAnswer }: FlashCardProps) {
 
   const [qq, setQQ] = useState(question)
   useEffect(() => {
@@ -15,24 +11,28 @@ export function FlashCard({ question, answer }: FlashCardProps) {
 	}, [question]);
 
 	return (
-    <section className="card" onClick={() => {
-			const willDisplayAnswer = !displayAnswer;
-			setDisplayAnswer(willDisplayAnswer)
-			if (willDisplayAnswer && isSpeechSynthesisAvailable()) {
-				speak(qq);
-			}
-		}}>
-      {displayAnswer ? answer : qq}
-    </section>
+		<div className="wrapper">
+			<section className="card" onClick={() => {
+					if (isSpeechSynthesisAvailable()) {
+						speak(qq);
+					}
+				}}>
+				<p className="card-inner" lang={displayAnswer ? "en" : "ko"}>
+					{displayAnswer ? answer : qq}
+				</p>
+			</section>
+		</div>
   );
 }
 
 type FlashCardProps = {
 	question: string
 	answer: string
+	displayAnswer?: boolean
 }
 
 FlashCard.defaultProps = {
   question: "-",
-  answer: "-"
+  answer: "-",
+  displayAnswer: false
 };
