@@ -5,10 +5,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* min-height: -webkit-fill-available;; */
+}
+
+html, body {
+	height: 100%;
 }
 
 #root {
-	height: 100vh;
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	background: white;
@@ -95,12 +101,15 @@ aside {
 }
 
 	aside button {
+
 		font-size: 50px;
-		line-height: 1.5;
 		background: #FFF;
 		border-radius: 15px;
 		box-shadow: 0 0 20px 0 #0005;
 		margin-left: .75em;
+
+		width: fit-content;
+		padding: 0.10em 0.25em;
 	}
 
 	aside button:first-child {
