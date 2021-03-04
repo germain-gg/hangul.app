@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { assemble } from "hangul-js";
 
-import { useSpeechSynthesis } from "./utils";
+import { useSpeechSynthesis } from "../utils/utils";
 
 export function FlashCard({ question, answer, displayAnswer }: FlashCardProps) {
 
-  const [qq, setQQ] = useState(question)
+  const [assembledQuestion, setAssembledQuestion] = useState(question)
 
  	useEffect(() => {
-		setQQ(assemble(question.split("")));
+		setAssembledQuestion(assemble(question.split("")));
 	}, [question]);
 
 	const {
@@ -21,13 +21,11 @@ export function FlashCard({ question, answer, displayAnswer }: FlashCardProps) {
 		<div className="wrapper">
 			<section className="card">
 				<p className="card-inner" lang={displayAnswer ? "en" : "ko"}>
-					{displayAnswer ? answer : qq}
+					{displayAnswer ? answer : assembledQuestion}
 
 					{ displayAnswer && isSpeechSynthesisAvailable && (
-						<button disabled={isSpeaking} type="button" onClick={() => speak(qq)} className="speech-button">
-							<span role="img" aria-label="Play character sound">
-								📣
-							</span>
+						<button disabled={isSpeaking} type="button" onClick={() => speak(assembledQuestion)} className="speech-button" role="img" aria-label="Play character sound">
+							📣
 						</button>
 					)}
 

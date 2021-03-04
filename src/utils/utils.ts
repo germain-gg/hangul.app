@@ -1,7 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function randomiser(min: number, max: number): number {
 	return Math.floor(Math.random() * (max - min)) + min;
+}
+
+export function useRandomiser(items: any) {
+	const [index, setCardIndex] = useState(0);
+
+	useEffect(() => {
+	  setCardIndex(randomiser(0, items.length));
+	}, [items.length]);
+
+	return {
+	  item: items[index],
+	  shuffle: () => setCardIndex(randomiser(0, items.length))
+	};
 }
 
 export function wordify(word: string): string {
@@ -53,4 +66,17 @@ export function useSpeechSynthesis() {
 		speak
 	}
 
+}
+
+export const LETTER_TYPE_STORAGE_KEY = "LETTER_TYPES";
+
+export function useStorageSync(key: string, value: any) {
+	useEffect(() => {
+		localStorage.setItem(key, JSON.stringify(value));
+	}, [value])
+}
+
+export function initReducer(initialState: object) {
+const data = localStorage.getItem(LETTER_TYPE_STORAGE_KEY);
+return data ? JSON.parse(data) : initialState;
 }

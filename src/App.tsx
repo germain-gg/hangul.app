@@ -1,31 +1,11 @@
 import React, { useState, useReducer, useEffect } from "react";
 
-import { randomiser, wordify } from "./utils";
-import alphabet, { Letter, LetterType } from "./alphabet";
+import { useRandomiser, wordify, initReducer, useStorageSync, LETTER_TYPE_STORAGE_KEY } from "./utils/utils";
+import alphabet, { Letter, LetterType } from "./utils/alphabet";
 
-import { FlashCard } from "./FlashCard";
-import Modal from "./Modal";
-
-const LETTER_TYPE_STORAGE_KEY = "LETTER_TYPES";
-
-function useRandomiser(items: any) {
-  const [index, setCardIndex] = useState(0);
-
-  useEffect(() => {
-    setCardIndex(randomiser(0, items.length));
-  }, [items.length]);
-
-  return {
-    item: items[index],
-    shuffle: () => setCardIndex(randomiser(0, items.length))
-  };
-}
-
-function useStorageSync(key: string, value: any) {
-	useEffect(() => {
-		localStorage.setItem(key, JSON.stringify(value));
-	}, [value])
-}
+import { FlashCard } from "./components/FlashCard";
+import Modal from "./components/Modal";
+import ActionButton from "./components/ActionButton";
 
 function reducer(state: any, action: any) {
 	if (state.hasOwnProperty(action.type)) {
@@ -38,11 +18,6 @@ function reducer(state: any, action: any) {
 	}
 }
 
-function init(initialState: object) {
-  const data = localStorage.getItem(LETTER_TYPE_STORAGE_KEY);
-  return data ? JSON.parse(data) : initialState;
-}
-
 export default function App() {
 
   const [enabledLetterTypes, dispatch] = useReducer(reducer, {
@@ -50,7 +25,7 @@ export default function App() {
     [LetterType.CONSONANT]:        false,
 		[LetterType.DOUBLE_VOWEL]:     false,
 		[LetterType.DOUBLE_CONSONANT]: false
-  }, init);
+  }, initReducer);
 
 	useStorageSync(LETTER_TYPE_STORAGE_KEY, enabledLetterTypes);
 
@@ -86,46 +61,46 @@ export default function App() {
 			</main>
 			<aside>
 
-				<button type="button" data-active={displaySettings} style={{ "--background": "#5639E0" } as React.CSSProperties} onClick={() => setSettingsVisibility(!displaySettings)}>
-					<span role="img" aria-label="Choose level">
-						⚙️
-					</span>
-				</button>
-
-				<button type="button" data-active={displayAnswer} style={{ "--background": "#FF6C27" } as React.CSSProperties} onClick={() => setAnswerVisibility(!displayAnswer)}>
-					<span role="img" aria-label="Toggle the answer">
-						👀
-					</span>
-				</button>
-
-				<button type="button" onClick={() => shuffle()} style={{ "--background": "#00CA8B" } as React.CSSProperties} >
-					<span role="img" aria-label="Next question">
-						🔄
-					</span>
-				</button>
+				<ActionButton
+					color="#5639E0"
+					label="Choose level"
+					icon="⚙️"
+					active={displaySettings}
+					onClick={() => setSettingsVisibility(!displaySettings)}
+				/>
+				<ActionButton
+					color="#FF6C27"
+					label="Toggle the answer"
+					icon="👀"
+					active={displayAnswer}
+					onClick={() => setAnswerVisibility(!displayAnswer)}
+				/>
+				<ActionButton
+					color="#00CA8B"
+					label="Next question"
+					icon="🔄"
+					onClick={() => shuffle()}
+				/>
 
 				{displaySettings && (
-					<Modal>
-						<div className="modal-body">
-							<button type="button" onClick={() => setSettingsVisibility(false)}>Close</button>
-							<ul>
-								{Object.keys(LetterType).map((type) => (
-									<li key={type}>
-										<label htmlFor={`checkbox-${type}`}>
-											<input
-												onChange={() => dispatch({ type: type })}
-												type="checkbox"
-												name="letter_type"
-												checked={enabledLetterTypes[type]}
-												value={type}
-												id={`checkbox-${type}`}
-											/>
-											{wordify(type)}
-										</label>
-									</li>
-								))}
-							</ul>
-						</div>
+					<Modal onClose={() => setSettingsVisibility(false)}>
+						<ul>
+							{Object.keys(LetterType).map((type) => (
+								<li key={type}>
+									<label htmlFor={`checkbox-${type}`}>
+										<input
+											onChange={() => dispatch({ type: type })}
+											type="checkbox"
+											name="letter_type"
+											checked={enabledLetterTypes[type]}
+											value={type}
+											id={`checkbox-${type}`}
+										/>
+										{wordify(type)}
+									</label>
+								</li>
+							))}
+						</ul>
 					</Modal>
 				)}
 			</aside>
