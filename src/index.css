@@ -92,6 +92,21 @@ main {
 	  align-items: center;
   }
 
+  .speech-button {
+	  position: absolute;
+	  bottom: 25px;
+	  right: 25px;
+	  background: #fff2;
+	  border-radius: 50%;
+	  font-size: 50px;
+	  padding: 0.25em;
+	  line-height: 1;
+  }
+
+  .speech-button:disabled {
+	  opacity: .5;
+  }
+
 
 
 aside {

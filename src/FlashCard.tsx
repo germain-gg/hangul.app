@@ -1,24 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { assemble } from "hangul-js";
 
-import { isSpeechSynthesisAvailable, speak } from "./utils";
+import { useSpeechSynthesis } from "./utils";
 
 export function FlashCard({ question, answer, displayAnswer }: FlashCardProps) {
 
   const [qq, setQQ] = useState(question)
-  useEffect(() => {
+
+ 	useEffect(() => {
 		setQQ(assemble(question.split("")));
 	}, [question]);
 
+	const {
+		isSpeechSynthesisAvailable,
+		isSpeaking,
+		speak
+	} = useSpeechSynthesis();
+
 	return (
 		<div className="wrapper">
-			<section className="card" onClick={() => {
-					if (isSpeechSynthesisAvailable()) {
-						speak(qq);
-					}
-				}}>
+			<section className="card">
 				<p className="card-inner" lang={displayAnswer ? "en" : "ko"}>
 					{displayAnswer ? answer : qq}
+
+					{ displayAnswer && isSpeechSynthesisAvailable && (
+						<button disabled={isSpeaking} type="button" onClick={() => speak(qq)} className="speech-button">
+							<span role="img" aria-label="Play character sound">
+								📣
+							</span>
+						</button>
+					)}
+
 				</p>
 			</section>
 		</div>
