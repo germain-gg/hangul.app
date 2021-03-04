@@ -1,6 +1,14 @@
 {
   "name": "hangul.app",
   "version": "0.0.0",
+	"description": "한글 배우기 | Learn Hangul",
+	"keywords": ["korean", "hangul", "learning"],
+	"homepage": "https://hangul.app",
+	"repository": {
+    "type": "git",
+    "url": "https://github.com/gsouquet/hangul.app.git"
+  },
+	"license": "MIT",
 	"private": true,
   "scripts": {
     "dev": "vite",
