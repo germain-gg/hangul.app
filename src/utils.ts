@@ -3,12 +3,12 @@ export function randomiser(min: number, max: number): number {
 }
 
 export function wordify(word: string): string {
-	return word
-		.toLowerCase()
-		.replaceAll(/(?<=^|_)[a-z]{1}/g, function(match) {
-			return match.toUpperCase();
-		})
-		.replaceAll("_", " ") + "s";
+	return word.charAt(0)
+		+ word
+			.slice(1)
+			.toLowerCase()
+			.replaceAll("_", " ")
+		+ "s"
 }
 
 export function getKoreanVoice() {
