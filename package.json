@@ -1,19 +1,24 @@
 {
   "name": "hangul.app",
   "version": "0.0.0",
-	"description": "한글 배우기 | Learn Hangul",
-	"keywords": ["korean", "hangul", "learning"],
-	"homepage": "https://hangul.app",
-	"repository": {
+  "description": "한글 배우기 | Learn Hangul",
+  "keywords": [
+    "korean",
+    "hangul",
+    "learning"
+  ],
+  "homepage": "https://hangul.app",
+  "repository": {
     "type": "git",
     "url": "https://github.com/gsouquet/hangul.app.git"
   },
-	"license": "MIT",
-	"private": true,
+  "license": "MIT",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "lint": "eslint --ext js,jsx,ts,tsx src"
   },
   "dependencies": {
     "hangul-js": "^0.2.6",
@@ -23,8 +28,30 @@
   "devDependencies": {
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
     "@vitejs/plugin-react-refresh": "^1.3.1",
+    "eslint": "^7.21.0",
+    "eslint-plugin-react": "^7.22.0",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1",
     "typescript": "^4.1.2",
-    "vite": "^2.0.5"
+    "vite": "^2.0.5",
+    "yorkie": "^2.0.0"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write"
+    ],
+    "*.ts": [
+      "eslint",
+      "prettier --parser=typescript --write"
+    ],
+    "*.html": [
+      "prettier --write"
+    ]
   }
 }
