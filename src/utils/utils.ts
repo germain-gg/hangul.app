@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 
 export function randomiser(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -76,4 +76,43 @@ export function useStorageSync(key: string, value: unknown): void {
 export function initReducer(initialState: any): unknown {
   const data = localStorage.getItem(LETTER_TYPE_STORAGE_KEY);
   return data ? JSON.parse(data) : initialState;
+}
+
+export const AppContext = createContext({
+  activePath: window.location.pathname,
+});
+
+export function useClientRouting() {
+  const [activePath, setActivePath] = useState(window.location.pathname);
+
+  function trackLinkClicks(event: any): void {
+    const anchor =
+      event.target.tagName.toLowerCase() === "a"
+        ? event.target
+        : event.target.closest("a");
+
+    if (anchor instanceof HTMLAnchorElement) {
+      const newPath = anchor.pathname;
+      event.preventDefault();
+      history.pushState({}, "", newPath);
+      setActivePath(newPath);
+    }
+  }
+
+  function updateActivePath() {
+    setActivePath(window.location.pathname);
+  }
+
+  useEffect(() => {
+    window.addEventListener("popstate", updateActivePath);
+    window.addEventListener("click", trackLinkClicks, true);
+    return () => {
+      window.removeEventListener("popstate", updateActivePath);
+      window.removeEventListener("click", trackLinkClicks, true);
+    };
+  }, []);
+
+  return {
+    activePath,
+  };
 }

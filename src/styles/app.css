@@ -20,10 +20,17 @@ body {
 }
 
 header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 0 1em;
 }
+  header a {
+    font-size: 30px;
+    filter: grayscale(1);
+  }
 
-header [role="img"] {
+header h1 [role="img"] {
   margin-right: 0.5em;
 }
 
