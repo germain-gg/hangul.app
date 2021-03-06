@@ -197,3 +197,20 @@ const alphabet: Array<Letter> = [
 ];
 
 export default alphabet;
+
+export const vowels = alphabet.filter((character) => {
+  return (
+    character.type === LetterType.VOWEL ||
+    character.type === LetterType.DOUBLE_VOWEL
+  );
+});
+
+/**
+ * excluding double consonants frm that set of characters
+ * They could be over represented compared to how often they are used in
+ * the korean language
+ */
+
+export const consonants = alphabet.filter((character) => {
+  return character.type === LetterType.CONSONANT;
+});

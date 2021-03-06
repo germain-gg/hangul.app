@@ -1,5 +1,8 @@
 import { useState, useEffect, createContext } from "react";
 
+import { assemble } from "hangul-js";
+import { vowels, consonants } from "./alphabet";
+
 export function randomiser(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -114,5 +117,29 @@ export function useClientRouting() {
 
   return {
     activePath,
+  };
+}
+
+export function generateSyllable() {
+  const syllableCharacters = Array(randomiser(2, 4))
+    .fill("")
+    .map((_, index) => {
+      const chars = index % 2 === 0 ? consonants : vowels;
+
+      return chars[randomiser(0, chars.length)];
+    });
+
+  const hangulSymbol = assemble(
+    syllableCharacters.map((letter) => letter.char)
+  );
+  const romanization = syllableCharacters
+    .map((letter) => {
+      return letter.romanization.split(",")[0].replace("-", "").trim();
+    })
+    .join("");
+
+  return {
+    char: hangulSymbol,
+    romanization,
   };
 }

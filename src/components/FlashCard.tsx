@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, CSSProperties } from "react";
 import { assemble } from "hangul-js";
 
 import { useSpeechSynthesis } from "../utils/utils";
 
-export function FlashCard({ question, answer, displayAnswer }: FlashCardProps): JSX.Element {
+export function FlashCard({ question, answer, displayAnswer, color }: FlashCardProps): JSX.Element {
   const [assembledQuestion, setAssembledQuestion] = useState(question);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export function FlashCard({ question, answer, displayAnswer }: FlashCardProps): 
 
   return (
     <div className="wrapper">
-      <section className="card">
+      <section className="card" style={{ "--background": color } as CSSProperties}>
         <p className="card-inner" lang={displayAnswer ? "en" : "ko"}>
           {displayAnswer ? answer : assembledQuestion}
 
@@ -44,10 +44,12 @@ type FlashCardProps = {
   question: string;
   answer: string;
   displayAnswer?: boolean;
+  color?: string
 };
 
 FlashCard.defaultProps = {
   question: "-",
   answer: "-",
   displayAnswer: false,
+  color: "#333"
 };

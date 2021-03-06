@@ -57,6 +57,7 @@ function LetterPage(): JSX.Element {
           question={item?.char}
           answer={item?.romanization}
           displayAnswer={displayAnswer}
+          color="#5639E0" 
         />
       </main>
       <aside>
