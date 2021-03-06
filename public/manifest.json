@@ -1,0 +1,30 @@
+{
+  "background_color": "#fff",
+  "categories": [
+    "korean",
+    "hangul",
+    "learning"
+  ],
+  "description": "Learn the korean alphabet",
+  "dir": "ltr",
+  "display": "minimal-ui",
+  "icons": [
+    {
+      "src":"icons/android-chrome-192x192.png",
+      "sizes":"192x192",
+      "type":"image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src":"icons/android-chrome-512x512.png",
+      "sizes":"512x512",
+      "type":"image/png"
+    }
+  ],
+  "lang": "en-US",
+  "name": "한글 배우기 | Hangul.app",
+  "orientation": "portrait",
+  "short_name": "Hangul.app",
+  "start_url": "https://hangul.app",
+  "theme_color": "#ffffff"
+}
