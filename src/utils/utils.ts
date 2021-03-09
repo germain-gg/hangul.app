@@ -26,12 +26,13 @@ export function wordify(word: string): string {
   );
 }
 
+const KOREAN_LOCALE = "ko-KR";
+
 function getKoreanVoice() {
-  const koreanLocale = "ko-KR";
   if (window.speechSynthesis) {
     return (
       window.speechSynthesis.getVoices().find((voice) => {
-        return voice.lang === koreanLocale;
+        return voice.lang === KOREAN_LOCALE;
       }) || null
     );
   } else {
@@ -40,7 +41,7 @@ function getKoreanVoice() {
 }
 
 function isSpeechSynthesisAvailable() {
-  return window.speechSynthesis && getKoreanVoice();
+  return "speechSynthesis" in window;
 }
 
 export function useSpeechSynthesis() {
@@ -49,7 +50,13 @@ export function useSpeechSynthesis() {
   function speak(text: string) {
     if (!isSpeaking) {
       const utter = new SpeechSynthesisUtterance(text);
-      utter.voice = getKoreanVoice();
+
+      const voice = getKoreanVoice();
+      if (voice) {
+        utter.voice = voice;
+      }
+      utter.lang = KOREAN_LOCALE;
+
       utter.rate = 0.75;
 
       setSpeakingStatus(true);
